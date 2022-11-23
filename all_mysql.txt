@@ -1,0 +1,136 @@
+show databases;
+create database [db_name];
+use [db_name];
+drop database [db_name]
+
+create table [table_name] (col1 , col2, col3 , col4......);
+eg user
+
+show tables;
+desc [tb_name];
+drop table [table_name];
+
+alter table [old table name] rename to [new name];
+truncate table [table_name];
+
+insert into [table_name](id,name,city) values(12,'durgesh','delhi');
+insert intor [table_name] values(12,'ankit','kanpur');
+
+alter table [table_name] add col1;
+update [table_name] set col= value , col = value where col=value;
+delete from [table_name] where col=value;
+
+where:
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.21 MySQL Community Server - GPL
+
+mysql> use learn;
+Database changed
+mysql> show tables;
+
+mysql> select * from student;
+
+mysql> select * from student where city='lucknow';
+
+mysql> select * from student where country='india';
+
+mysql> select name,city,country from student where country='india';
+
+mysql> select name as  "USERNAME" , city as "CITYNAME" from student ;
+
+mysql> select * from student where city='kanpur';
+
+mysql> select country from student;
+
+mysql> select distinct(country) from student;
+
+mysql> select * from student where country='india' and  city='lucknow';
+
+mysql> select * from user;
+
+mysql> select * from student where id >=24 and id<=2334;
+
+mysql> select * from student where id between 24 and 2334;
+
+mysql> select * from student where id >24 and id<2334;
+
+mysql> select * from student where id=23 or id=234 or id=246;
+
+mysql> select * from student where id in(23,234,246);
+
+mysql> select * from student limit 4;
+
+mysql> select * from student limit 2 offset 2;
+
+mysql> select * from student order by id;
+
+mysql> select * from student order by id desc;
+
+mysql> select * from student order by name desc;
+
+mysql> select * from student order by name asc;
+
+mysql> select * from student order by name;
+
+mysql> select * from student order by id desc limit 2;
+
+mysql> update student set name='ram singh' where id=24234236;
+
+mysql> select * from student;
+
+mysql> select * from student where name like 'a%';
+
+mysql> select * from student where city like "_u%";
+
+mysql> select * from student where city like "%o_";
+
+mysql> select SUM(id) from student;
+
+mysql> select SUM(id) as "Total Salary" from student;
+
+mysql> select AVG(id) from student;
+
+mysql> select COUNT(id) from student;
+
+mysql> select MIN(id) from student;
+
+mysql> select name from student where id = (select MIN(id) from student) ;
+
+mysql> select name from student where id = (select MAX(id) from student) ;
+
+mysql> show tables;
+
+mysql> create table laptops(lid int primary key, lmodel varchar(200), studentId int , foreign key(studentId) references student(id));
+
+mysql> desc student;
+
+mysql> desc laptops;
+
+mysql> insert into laptops values(13414,'HP',96418565);
+
+mysql> insert into laptops values(13414,'Dell',24);
+
+mysql> insert into laptops values(134132454,'Dell',24);
+
+mysql> select * from laptops;
+
+mysql> select student.name,student.city , laptops.lmodel from student , laptops where student.id=laptops.studentId;
+
+mysql> select student.name,student.city , laptops.lmodel from student , laptops where student.id=laptops.studentId and student.name='Ankit';
+
+mysql> select student.name , laptops.lmodel from student inner join laptops on student.id=laptops.studentId;
+
+
+
+
+# JOINS---------------------------
+
+mysql> SELECT * FROM table_name1 INNER JOIN table_name2 ON table1.column = table2.column;
+
+mysql> SELECT * FROM table_name1 LEFT JOIN table_name2 ON table1.column = table2.column;
+
+mysql> SELECT * FROM table_name1 RIGHT JOIN table_name2 ON table1.column = table2.column;
+
+mysql> SELECT * FROM table_name1 FULL JOIN table_name2 ON table1.column = table2.column;
