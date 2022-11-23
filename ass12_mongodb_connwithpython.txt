@@ -1,0 +1,116 @@
+ 
+ASSIGNMENT 12 AIM: 
+Implement MongoDB database connectivity with python end language to implement Database navigation operations. 
+ 
+Objective:  
+1. To learn and understand MongoDB connectivity with Python. 
+2. To implement select,insert,update,delete operations using MongoDB in python. 
+ 
+Theory: 
+PyMongo has a set of packages for Python MongoDB interaction. 
+To install PyMongo, open command line and type or in Editor Like pycharm add package pymong in interpreter setting. 
+python -m pip install pymongo 
+ 
+1. Python has a native library for MongoDB. The name of the available library is “PyMongo”. To import this, execute the following command: 
+from pymongo import MongoClient 
+2. Create a connection : The very first after importing the module is to create a MongoClient. 
+from pymongo import MongoClient client = MongoClient() 
+3. After this, connect to the default host and port. Connection to the host and port is done explicitly. The following command is used to connect the MongoClient on the localhost which runs on port number 27017. 
+client = MongoClient(‘host’, port_number) example:- client = MongoClient(‘localhost’, 27017) 
+4. It can also be done using the following command: 
+client = MongoClient(“mongodb://localhost:27017/”) 
+5. Access DataBase Objects : To create a database or switch to an existing database we use: Method 1 : Dictionary-style mydatabase = client[‘name_of_the_database’] 
+6. Method2 : 
+mydatabase = client.name_of_the_database 
+7. If there is no previously created database with this name, MongoDB will implicitly create one for the user. 
+Note : The name of the database fill won’t tolerate any dash (-) used in it. The names like my-Table will raise an error. So, underscore are permitted to use in the name. 
+8. Accessing the Collection : Collections are equivalent to Tables in RDBMS. We access a collection in PyMongo in the same way as we access the Tables in the RDBMS. To access the table, say table name 
+“myTable” of the database, say “mydatabase”. Method 1: 
+mycollection = mydatabase[‘myTable’] 
+9. Method 2 : 
+mycollection = mydatabase.myTable 
+10. >MongoDB store the database in the form of dictionaries as shown: >    record = { 
+	   	title: 'MongoDB and Python',  
+ description: 'MongoDB is no SQL database',   tags: ['mongodb', 'database', 'NoSQL'],  
+	 	viewers: 104  
+ 	}  
+11. ‘_id’ is the special key which get automatically added if the programmer forgets to add explicitly. _id is the 12 bytes hexadecimal number which assures the uniqueness of every inserted document. 
+ 
+12. Insert the data inside a collection : 
+Methods used: 
+insert_one() or insert_many() 
+We normally use insert_one() method document into our collections. Say, we wish to enter the data named as record into the ’myTable’ of ‘mydatabase’. 
+rec = myTable.insert_one(record) 
+The whole code looks likes this when needs to be implemented. 
+# importing module 
+from pymongo import MongoClient 
+# creation of MongoClient client=MongoClient() 
+  # Connect with the portnumber and host 
+client = MongoClient(“mongodb://localhost:27017/”) 
+  # Access database 
+mydatabase = client[‘name_of_the_database’] 
+  # Access collection of the database 
+mycollection=mydatabase[‘myTable’]   # dictionary to be added in the database rec={ 
+title: 'MongoDB and Python',  
+description: 'MongoDB is no SQL database',  tags: ['mongodb', 'database', 'NoSQL'],  viewers: 104  
+} 
+  # inserting the data in the database rec = mydatabase.myTable.insert(record) 
+13. Querying in MongoDB : There are certain query functions which are used to filer the data in the database. The two most commonly used functions are: 
+1. find() find() is used to get more than one single document as a result of query. 
+for i in mydatabase.myTable.find({title: 'MongoDB and Python'})     print(i) 
+2. This will output all the documents in the myTable of mydatabase whose title is ‘MongoDB and 
+Python’. 
+3. count() count() is used to get the numbers of documents with the name as passed int he parameters. print(mydatabase.myTable.count({title: 'MongoDB and Python'})) 
+4. This will output the numbers of documents in the myTable of mydatabase whose title is ‘MongoDB and Python’. 
+5. These two query functions can be summed to give a give the most filtered result as shown below. print(mydatabase.myTable.find({title: 'MongoDB and Python'}).count()) 
+6. To print all the documents/entries inside ‘myTable’ of database ‘mydatabase’ : Use the following code: 
+from pymongo import MongoClient   try: 
+    conn = MongoClient() 
+    print("Connected successfully!!!") except:   
+    print("Could not connect to MongoDB") 
+  # database name: mydatabase db = conn.mydatabase 
+# Created or Switched to collection names: myTable collection = db.myTable 
+# To find() all the entries inside collection name 'myTable' cursor = collection.find() for record in cursor:     print(record) 
+14. Deleting document from Collection or Database 
+ 
+In MongoDB, a single document can be deleted by the method delete_one(). The first parameter of the method would be a query object which defines the document to be deleted. If there is a reoccurrence of the same document, only the first appeared document would be deleted.  
+Examples:   
+# Python program to demonstrate # delete_one  import pymongo 
+ #creating Mongoclient object to create database with the specified connection URL students = pymongo.MongoClient('localhost', 27017) 
+ # connecting to a database with  name GFG 
+Db = students["GFG"] 
+ # connecting to a collection with  name Geeks coll = Db["Geeks"]  # creating query object myQuery ={'Class':'2'} coll.delete_one(myQuery) 
+ # print collection after deletion: 
+for x in coll.find():     print(x) 
+Delete_many() 
+Delete_many() is used when one needs to delete more than one document. A query object containing which document to be deleted is created and is passed as the first parameter to the delete_many(). 
+ 
+Example 1: Deleting all the documents where the name starts with ‘A’. 
+import pymongo 
+  client = pymongo.MongoClient("mongodb://localhost:27017/") 
+  # Connecting to the database mydb = client["GFG"] 
+  # Connecting the to collection 
+col = mydb["Geeks"] 
+  query = {"Name": {"$regex": "^A"}} d = col.delete_many(query) 
+  print(d.deleted_count, " documents deleted !!") 
+15. updateOne() 
+It is a function by which we can update a record in a MongoDB database or Collection. This method mainly focuses on two arguments that we passed one is the query (i.e filter) object defining which document to update and the second is an object defining the new values of the document(i.e new_values) and the rest arguments are optional that we will discuss in the syntax section. This function finds the first document that matches with the query and update it with an object defining the new values of the document, i.e Updates a single document within the collection based on the filter. 
+Syntax: collection.update_one(filter, new_values, upsert=False, bypass_document_validation=False, collation=None, array_filters=None, session=None) Parameters: 
+• ‘filter’ : A query that matches the document to update. 
+• ‘new_values’ : The modifications to apply. 
+• ‘upsert’ (optional): If “True”, perform an insert if no documents match the filter. 
+• ‘bypass_document_validation’ (optional) : If “True”, allows the write to opt-out of document level validation. Default is “False”. 
+• ‘collation’ (optional) : An instance of class: ‘~pymongo.collation.Collation’. This option is only supported on MongoDB 3.4 and above. 
+• ‘array_filters’ (optional) : A list of filters specifying which array elements an update should apply. 
+Requires MongoDB 3.6+. 
+• ‘session’ (optional) : a class:’~pymongo.client_session.ClientSession’. 
+Example 1: In this example, we are going to update the fan quantity from 10 to 25. 
+# importing Mongoclient from pymongo from pymongo import MongoClient  conn = MongoClient('localhost', 27017)  
+# database  db = conn.database  
+# Created or Switched to collection names: GeeksForGeeks collection = db.GeeksForGeeks   # Updating fan quantity form 10 to 25. 
+filter = { 'appliance': 'fan' }   # Values to be updated. newvalues = { "$set": { 'quantity': 25 } }   # Using update_one() method for single  updation. collection.update_one(filter, newvalues)    # Printing the updated content of the  database cursor = collection.find() for record in cursor:      print(record)  
+Update_many() 
+Update function has been deprecated in newer versions of  MongoDB (3.xx and above). Earlier update function could be used for both single updates and multiple using “multi = true”. But in newer versions of mongoDB it is recommended to use update_many() and update_one().  
+ 
+Conclusion: Thus we learnt and successfully implemented MongoDB database connectivity with Python front end program. 
+ 

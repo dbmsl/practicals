@@ -1,0 +1,202 @@
+
+ 
+ASSIGNMENT 2 AIM:  
+a) Design and Develop SQL DDL statements which demonstrate the use of SQL objects such as Table, View, Index, Sequence, Synonym 
+ 
+b) Design at least 10 SQL queries for suitable database application using SQL DML statements: Insert, Select, Update, Delete with operators, functions, and set operator. 
+LEARNING OBJECTIVES: 
+1. Understand SQL DDL Commands 
+2. Understand Tables and Views in database. 
+3. Understand the implementation of DML commands. 
+QUERY STATEMENT:  
+a) Part 
+1. Create table Employee with attribute eid,ename,dob,addr,dept and job 
+2. Create table salary with attribute empid, basic, da, pf, acno 
+3. Create table msalary with attribute empid,smonth ,wdays,dsalary; 
+4. Create table clone from employee; 
+5. Create table dob1 from employee copy only eid, ename, dob; 
+6. Add primary key on table use eid as primary 
+7. Change size of name to 25 characters 
+8. Create and display index i1 on column ename of table employee 
+9. Drop and display index i1 on table employee 
+10. Add column test in table employee 
+11. Change datatype of column test to integer  
+12. Drop column test from table employee 
+13. Add foreign key in table salary which referred from employee table 
+14. Drop clone table 
+15. Create view from employee 
+16. Create view dobv with column eid,ename,dob from employee; 
+17. Display content of view 
+b) Part: 
+                    Solve Any 10, 12 and 13 are compulsory 
+1. Find employee who works in Nashik 
+2. Find Cities where company has their Plant 
+3. Find Cities where company has their Plant in descending order 
+4. Find data of employee who works in Nashik or who’s job is Supervisor 
+5. Find data of employee who who works in nashik as Manager 
+6. Find employee who joined in year 2000 
+7. Find employee who work in Mumbai or Pune use in operator. 
+8. Find maximum and minimum basic salary. 
+9. Find average and total salary paid in month JAN 
+10. find data of employee who works in Nashik or who’s job is Supervisor use union 
+11. Find employee id of employee who’s basic is at least 8000 
+12. Company has closed Pune plant and shifted it to Jalgaon along with employee do necessary changes in database 
+13. remove record of employee id 4 from salary table 
+Insert following data in employee 
++-----+---------+------------+---------+---------+------------+ 
+| eid | ename | dob | addr | dept | job | 
++-----+---------+------------+---------+---------+------------+ 
+| 1 | Suresh | 2007-05-06 | Nashik | Asembly | Worker | 
+| 2 | Ramesh | 2000-05-06 | Nashik | Asembly | Manager | 
+| 3 | Kamlesh | 2000-06-06 | Jalgaon | Asembly | Supervisor | 
+4 Naziya 2006-01-01 Mumbai Transport Supervisor 
++-----+---------+------------+---------+---------+------------+ 
+Insert following data in salary 
++-------+-------+------+------+----------+ 
+| empid | basic | da | pf | acno | 
++-------+-------+------+------+----------+ 
+| 1 | 7500 | 8000 | 3600 | 45123678 | 
+| 2 | 8500 | 9000 | 3600 | 45123680 | 
+| 3 | 8500 | 9000 | 3600 | 45123689 | 
+4 9000 9500 3600 45123699 
++-------+-------+------+------+----------+ 
+Insert following data in msalary 
++-------+--------+-------+---------+ 
+| empid | smonth | wdays | dsalary | 
++-------+--------+-------+---------+ 
+| 1 | JAN | 30 | 12000 | 
+| 1 | FEB | 28 | 12000 | 
+| 1 | MAR | 31 | 12000 | 
+| 2 | JAN | 30 | 13000 | 
+| 2 | FEB | 28 | 13000 | 
+| 2 | MAR | 31 | 13000 | 
+| 3 | JAN | 30 | 13000 | 
+| 3 | FEB | 28 | 13000 | 
+| 3 | MAR | 31 | 13000 | 
+| 1 | JAN | 30 | 13500 | 
+| 1 | FEB | 28 | 13500 | 
+| 1 | MAR | 31 | 13500 | 
++-------+--------+-------+---------+ 
+THEORY: 
+a. DDL Commands 
+Data Definition Language (DDL) statements are used to define the database structure or schema. Some examples: 
+• CREATE - to create objects in the database 
+• ALTER - alters the structure of the database 
+• DROP - delete objects from the database 
+• TRUNCATE - remove all records from a table, including all spaces allocated for the records are removed 
+• COMMENT - add comments to the data dictionary 
+• RENAME - rename an object 
+
+1                                      Department of Computer Engineering                  LoGMIEER, Nashik 
+ 
+ 
+ 
+Database Management System Laboratory
+ 
+Prof. B.Y. Patil
+ 
+ 
+b. DML Commands 
+Data Manipulation Language (DML) statements are used for managing data within schema objects. Some examples: 
+• SELECT - retrieve data from the a database 
+• INSERT - insert data into a table 
+• UPDATE - updates existing data within a table 
+• DELETE - deletes all records from a table, the space for the records remain c. DCL Commands 
+Data Control Language (DCL) statements. Some examples: 
+• GRANT - gives user's access privileges to database 
+• REVOKE - withdraw access privileges given with the 
+• GRANT command 
+d. TCL Commands 
+Transaction Control (TCL) statements are used to manage the changes made by DML statements. It allows statements to be grouped together into logical transactions. 
+• COMMIT - save work done 
+• SAVEPOINT - identify a point in a transaction to which you can later roll back 
+• ROLLBACK - restore database to original since the last COMMIT 
+• SET TRANSACTION - Change transaction options like isolation level and what rollback segment to use 
+ 
+A] DDL - Data Definition Language 
+DDL is a standard subset of SQL that is used to define tables (database structure), and other metadata related things. The few basic commands include: CREATE DATABASE, CREATE 
+TABLE, DROP TABLE, and ALTER TABLE. There are many other statements, but those are the ones most commonly used. 
+• CREATE DATABASE 
+In order to create a database, a relatively standard command ‘CREATE DATABASE’ is used. The general format of the command is: 
+CREATE DATABASE <database-name> ; 
+The name can be anything; usually it shouldn’t have spaces (or those spaces have to be properly escaped). Some databases allow hyphens, and/or underscores in the name. The name is usually limited in size (some databases limit the name to 8 characters, others to 32—in other words, it depends on what database you use). 
+• DROP DATABASE 
+Just like there is a ‘create database’ there is also a ‘drop database’, which simply removes the database. 
+DROP DATABASE <database-name> ; 
+• CREATE TABLE 
+Probably the most common DDL statement is ‘CREATE TABLE’. Intuitively enough, it is used to create tables. The general format is something along the lines of: CREATE TABLE <table-name> (     column1 datatype,     column2 datatype,     column3 datatype, 
+... 
+); 
+For example: 
+CREATE TABLE PERSON ( 
+PERSONID INT, 
+LNAME VARCHAR(20), 
+FNAME VARCHAR(20) NOT NULL, 
+DOB DATE, 
+PRIMARY KEY(PERSONID) 
+); 
+The above creates a table named person, with person id, last name, first name, and date of birth. 
+There is also the ‘primary key’ definition.  
+Create Table Using another Table as,  
+  CREATE TABLE new_table_name AS    	  SELECT column1, column2,... 
+	     	FROM  existing_table_name 
+           WHERE ....; 
+• DROP TABLE 
+Just like there is a ‘create table’ there is also a ‘drop table’, which simply removes the table. Note that it doesn’t ask you for confirmation, and once you remove a table, it is gone forever. DROP TABLE <table-name> ; 
+• ALTER TABLE 
+There is a command to ‘alter’ tables after you create them. This is usually only useful if the table already has data, and you don’t want to drop it and recreate it. Also, most databases have varying restrictions on what ‘alter table’ is allowed to do. For example, Oracle allows you do add a column, but not remove a column. The general syntax to add a field is: 
+ALTER TABLE <table-name> 
+ADD <field-name> <data-type> The general syntax to drop a field is: 
+ALTER TABLE <table-name> 
+DROP <field-name> 
+Note that very few databases let you drop a field. The drop command is mostly present to allow for dropping of constraints (such as indexes, etc.) on the table. The general syntax to modify a field (change its type, etc.) is: 
+ALTER TABLE <table-name> 
+MODIFY <field-name> <new-field-declaration> 
+Note that you can only do this to a certain extent on most databases. Just as with ‘drop’, this is mostly useful for working with table constraints (changing ‘not null’ to ‘null’, etc.) 
+ 
+B] DML - Data Manipulation Language  
+This is a standard subset of SQL that is used for data manipulation. Intuitively, we need to first inset data into the database. Once it’s there, we can retrieve it, modify it, and delete it. These directly correspond to: INSERT, SELECT, UPDATE, and DELETE statements. 
+INSERT Statement  
+To get data into a database, we need to use the ‘insert’ statement. The general syntax is:  
+INSERT INTO <table-name> (<column1>,<column2>,<column3>,...) 
+VALUES (<column-value1>,<column-value2>,<column-value3>);  
+The column names (i.e.: column1, etc.) must correspond to column values (i.e.: column-value1, etc.). 
+There is a short-hand for the statement:  
+INSERT INTO <table-name>VALUES (<column-value1>,<column-value2>,    <columnvalue3>……);  
+Example, of inserting the ‘person’ record we’ve created earlier would be:  
+INSERT INTO PERSON(PERSONID,LNAME,FNAME,DOB) VALUES(1,’DOE’,’JOHN’,’1956-11-23’);  SELECT Statement  
+Probably the most used statement in all of SQL is the SELECT statement. The select statement has the general format of:  
+SELECT <column-list>  
+FROM <table-list>  
+WHERE <SEARCH-CONDITION> 
+The column-list indicates what columns you’re interested in (the ones which you want to appear in the result), the table-list is the list of tables to be used in the query, and search-condition specifies what criteria you’re looking for.  
+An example of a short-hand version to retrieve all ‘person’ records we’ve been using:  SELECT * FROM PERSON;  
+The WHERE Clause  
+The WHERE clause is used in UPDATE, DELETE, and SELECT statements, and has the same format in all these cases. It has to be evaluated to either true or false. Table 1 lists some of the common operators.  
+ 
+UPDATE Statement  
+The update statement is used for changing records. The general syntax is:  
+UPDATE <table-name>  
+SET <column1> = <value1>, <column2> = <value2>, ...  WHERE <criteria>  
+The criteria is what selects the records for update. The ‘set’ portion indicates which columns  should be updated and to what values. An example of the use would be:  
+UPDATE PERSON SET FNAME=’Clark’, LNAME=’Kent’ WHERE FNAME=’Superman’; 
+ 
+ALGORITHM a) :  
+• Start 
+• Login to RDBMS 
+• Create/Use Database 
+• Create table Employee with attribute eid,ename,dob,addr,dept and job 
+• create table salary with attribute empid ,basic,da i,pf acno 
+• create table msalary with attribute empid,smonth ,wdays,dsalary; 
+• Perform Queries  
+• Exit from RDBMS 
+• Stop ALGORITHM b) :  
+• Start  
+• Login to RDBMS  
+• Use Database  
+• Insert required data in Tables  
+• Perform Queries  
+• Exit RDBMS  
+• Stop  
+ 
+CONCLUSION: Hence we have studied Database DDL command. As well as we have studied and implemented SQL DML Commands. 

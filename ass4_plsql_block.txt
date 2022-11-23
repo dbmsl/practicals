@@ -1,0 +1,153 @@
+
+ 
+ASSIGNMENT 4 AIM: 
+Unnamed PL/SQL code block: Use of Control structure and Exception handling is mandatory. Write a PL/SQL block of code for the following requirements:- Schema: 
+1. Borrower (Rollin, Name, DateofIssue, NameofBook, Status) 
+2. Fine (Roll_no, Date, Amt) 
+• Accept roll_no & name of book from user. 
+• Check the number of days (from date of issue), if days are between 15 to 30 then fine amount will be Rs 5per day. 
+• If no. of days>30, per day fine will be Rs 50 per day & for days less than 30, Rs. 5 per day. 
+• After submitting the book, status will change from I to R. 
+• If condition of fine is true, then details will be stored into fine table. 
+ 
+LEARNING OBJECTIVES: 
+Understand the working PLSQL 
+Understanding Importance of PL SQL 
+Implementation Unnamed PL SQL code Block 
+ 
+THEORY: 
+WHAT IS PL/SQL? 
+PL/SQL is an extension of Structured Query Language (SQL) that is used in Oracle. Unlike SQL, PL/SQL allows the programmer to write code in a procedural format. Full form of PL/SQL is "Procedural Language extensions to SQL". 
+It combines the data manipulation power of SQL with the processing power of procedural language to create super powerful SQL queries. 
+PL/SQL means instructing the compiler 'what to do' through SQL and 'how to do' through its procedural way. 
+Similar to other database languages, it gives more control to the programmers by the use of loops, conditions and object-oriented concepts. 
+ARCHITECTURE OF PL/SQL 
+The PL/SQL architecture mainly consists of following three components: 
+1. PL/SQL block 
+2. PL/SQL Engine 
+3. Database Server 
+PL/SQL BLOCK: 
+• This is the component which has the actual PL/SQL code. 
+• This consists of different sections to divide the code logically (declarative section for declaring purpose, execution section for processing statements, exception handling section for handling errors) · It also contains the SQL instruction that used to interact with the database server. 
+• All the PL/SQL units are treated as PL/SQL blocks, and this is the starting stage of the architecture which serves as the primary input. 
+• Following are the different type of PL/SQL units. 
+Anonymous Block 
+Function 
+Library 
+Procedure 
+Package Body 
+Package Specification 
+Trigger 
+Type 
+Type Body 
+PL/SQL ENGINE 
+• PL/SQL engine is the component where the actual processing of the codes takes place. 
+• PL/SQL engine separates PL/SQL units and SQL part in the input (as shown in the image below). 
+• The separated PL/SQL units will be handled by the PL/SQL engine itself. 
+• The SQL part will be sent to database server where the actual interaction with database takes place. 
+• It can be installed in both database server and in the application server. 
+DATABASE SERVER: 
+• This is the most important component of Pl/SQL unit which stores the data. 
+• The PL/SQL engine uses the SQL from PL/SQL units to interact with the database server. 
+• It consists of SQL executor which parses the input SQL statements and execute the same. 
+Below is the pictorial representation of Architecture of PL/SQL. .3 
+ 
+ADVANTAGE OF USING PL/SQL 
+1. Better performance, as SQL is executed in bulk rather than a single statement 
+2. High Productivity 
+3. Tight integration with SQL 
+4. Full Portability 
+5. Tight Security 
+6. Support Object Oriented Programming concepts. 
+DIFFERENCE BETWEEN SQL AND PL/SQL 
+ 
+WHAT IS PL/SQL BLOCK? 
+In PL/SQL, the code is not executed in single line format, but it is always executed by grouping the code into a single element called Blocks. In this tutorial, you are going to learn about these blocks. 
+Blocks contain both PL/SQL as well as SQL instruction. All these instruction will be executed as a whole rather than executing a single instruction at a time. 
+ 
+BLOCK STRUCTURE 
+PL/SQL blocks have a pre-defined structure in which the code is to be grouped. Below are different sections of PL/SQL blocks. 
+1. Declaration section 
+2. Execution section 
+3. Exception-Handling section 
+The below picture illustrates the different PL/SQL block and their section order. 
+ 
+DECLARATION SECTION 
+This is the first section of the PL/SQL blocks. This section is an optional part. This is the section in which the declaration of variables, cursors, exceptions, subprograms, pragma instructions and collections that are needed in the block will be declared. Below are few more characteristics of this part. 
+• This particular section is optional and can be skipped if no declarations are needed. 
+• This should be the first section in a PL/SQL block, if present. 
+• This section starts with the keyword 'DECLARE' for triggers and anonymous block. For other subprograms, this keyword will not be present. Instead, the part after the subprogram name definition marks the declaration section. 
+• This section should always be followed by execution section. 
+ 
+EXECUTION SECTION 
+Execution part is the main and mandatory part which actually executes the code that is written inside it. Since the PL/SQL expects the executable statements from this block this cannot be an empty block, i.e., it should have at least one valid executable code line in it. Below are few more characteristics of this part. 
+• This can contain both PL/SQL code and SQL code. 
+• This can contain one or many blocks inside it as a nested block. 
+• This section starts with the keyword 'BEGIN'. 
+• This section should be followed either by 'END' or Exception-Handling section (if present) 
+ 
+EXCEPTION-HANDLING SECTION: 
+The exception is unavoidable in the program which occurs at run-time and to handle this Oracle has provided an Exception-handling section in blocks. This section can also contain PL/SQL statements. This is an optional section of the PL/SQL blocks. 
+• This is the section where the exception raised in the execution block is handled. 
+• This section is the last part of the PL/SQL block. 
+• Control from this section can never return to the execution block. 
+• This section starts with the keyword 'EXCEPTION'. 
+• This section should always be followed by the keyword 'END'. The Keyword 'END' marks the end of PL/SQL block. 
+ 
+PL/SQL BLOCK SYNTAX 
+Below is the syntax of the PL/SQL block structure. 
+ 
+
+DECLARE --optional 
+<declarations> 
+BEGIN --mandatory 
+<executable statements. At least one executable statement is mandatory> 
+EXCEPTION --optional 
+<exception handles> 
+END; --mandatory 
+/ 
+ 
+Note: A block should always be followed by '/' which sends the information to the compiler about the end of the block. 
+ 
+TYPES OF PL/SQL BLOCK 
+PL/SQL blocks are of mainly two types. 
+1. Anonymous blocks 
+2. Named Blocks 
+ 
+ANONYMOUS(UNNAMED) BLOCKS: 
+Anonymous blocks are PL/SQL blocks which do not have any names assigned to them. They need to be created and used in the same session because they will not be stored in the server as database objects. Since they need not store in the database, they need no compilation steps. They are written and executed directly, and compilation and execution happen in a single process. 
+Below are few more characteristics of Anonymous blocks. 
+• These blocks don't have any reference name specified for them. 
+• These blocks start with the keyword 'DECLARE' or 'BEGIN'. 
+• Since these blocks do not have any reference name, these cannot be stored for later purpose. They shall be created and executed in the same session. 
+• They can call the other named blocks, but call to anonymous block is not possible as it is not having any reference. 
+• It can have nested block in it which can be named or anonymous. It can also be nested in any blocks. 
+• These blocks can have all three sections of the block, in which execution section is mandatory, the other two sections are optional. 
+ 
+NAMED BLOCKS: 
+Named blocks have a specific and unique name for them. They are stored as the database objects in the server. Since they are available as database objects, they can be referred to or used as long as it is present on the server. The compilation process for named blocks happens separately while creating them as a database objects. 
+Below are few more characteristics of Named blocks. 
+• These blocks can be called from other blocks. 
+• The block structure is same as an anonymous block, except it will never start with the keyword 'DECLARE'. 
+Instead, it will start with the keyword 'CREATE' which instruct the compiler to create it as a database object. 
+• These blocks can be nested within other blocks. It can also contain nested blocks. 
+• Named blocks are basically of two types: 
+1. Procedure 
+2. Function 
+ 
+Algorithm: 
+• Start 
+• Login to RDBMS 
+• Create Borrower and Fine table. 
+• Insert some related data in Tables. 
+• Accept roll_no & name of book from user. 
+• Check the number of days (from date of issue), if days <=15 and days >=30 Fine=5*(days-14) 
+Else If no. of days>30, 
+Fine=5*14+(days-30)*50 
+• After submitting the book, Change Status I to R. 
+• If condition of fine is true, then details will be stored into fine table. 
+• Display Content of Fine table. 
+• Exit RDBMS 
+• Stop 
+	· 	 
+CONCLUSION: Hence We Have studied and implemented PL/SQL Block 

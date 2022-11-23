@@ -1,0 +1,271 @@
+
+ASSIGNMENT 10 AIM: 
+Implement aggregate function in mongodb and also implement index in mongodb 
+ 
+LEARNING OBJECTIVES: 
+To Understand Index and Aggregate function of MongoDB. 
+ 
+THEORY: 
+INTRODUCTION TO INDEXING 
+Typically, Indexes are data structures that can store collection’s data set in a form that is easy to traverse. Queries are efficiently executed with the help of indexes in MongoDB. 
+Indexes help MongoDB find documents that match the query criteria without performing a collection scan. If a query has an appropriate index, MongoDB uses the index and limits the number of documents it examines. Indexes store field values in the order of the value.The order in which the index entries are made support operations, such as equality matches and range-based queries. MongoDB sorts and returns the results by using the sequential order of the indexes. 
+The indexes of MongoDB are similar to the indexes in any other databases.MongoDB defines the indexes at the collection level for use in any field or subfield. 
+TYPES OF INDEX 
+MongoDB supports the following index types for querying. 
+Default _id: Each MongoDB collection contains an index on the default _id (Read as underscore id) field. If no value is specified for _id, the language driver or the mongod (read as mongo D) creates a _id field and provides an ObjectId (read as Object ID) value. 
+Single Field: For a single-field index and sort operation, the sort order of the index keys do not matter. MongoDB can traverse the indexes either in the ascending or descending order. 
+Compound Index: For multiple fields, MongoDB supports user-defined indexes, such as compound indexes. The sequential order of fields in a compound index is significant in MongoDB. 
+Multikey Index: To index array data, MongoDB uses multikey indexes. When indexing a field with an array value, MongoDB makes separate index entries for each array element. 
+Geospatial Index: To query geospatial data, MongoDB uses two types of indexes—2d indexes (read as two D indexes) and 2d sphere (read as two D sphere) indexes. Text Indexes: These indexes in MongoDB searches data string in a collection. 
+Hashed Indexes: MongoDB supports hash-based sharding and provides hashed indexes. These indexes the hashes of the field value. 
+ 
+PROPERTIES OF INDEX 
+Following are the index properties of MongoDB. 
+Unique Indexes 
+The unique property of MongoDB indexes ensures that duplicate values for the indexed field are rejected. In addition, the unique indexes can be interchanged functionally with other MongoDB indexes. 
+Sparse Indexes 
+This property ensures that queries search document entries having an indexed field. Documents without indexed fields are skipped during a query. Sparse index and the unique index can be combined to reject documents with duplicate field values and ignore documents without indexed keys. 
+Total time to Live or TTL Indexes 
+These are special indexes in MongoDB used to automatically delete documents from a collection after a specified duration of time. This is ideal for deleting information, such as machine-generated data, event logs, and session data that needs to be in the database for a shorter duration. 
+ 
+SINGLE FIELD INDEX 
+MongoDB supports indexes on any document filed in a collection. By default, the _id field in all collections has an index. Moreover, applications and users add indexes for triggering queries and performing operations. 
+MongoDB supports both, single field or multiple field indexes based on the operations the indextype performs. 
+db.items.createIndex( { “item" : 1 } ) 
+The command given above is used to create an index on the item field for the items collection. 
+SINGLE FIELD INDEX ON EMBEDDED DOCUMENT 
+You can index top-level fields within a document. Similarly, you can create indexes within embedded document fields. 
+{ "_id" : 3, "item" : "Book", "available" : true, "soldQty" : 144821, "category" : "NoSQL", "details" : { "ISDN" : "1234", "publisher" : "XYZ Company" }, "onlineSale" : true } 
+The structure shown above refers to a document stored in a collection. In the document, the details field depicts an embedded document that has two embedded fields— ISDN and publisher. db.items.createIndex( {details.ISDN: 1 } ) 
+To create an index on the ISDN field and the embedded document called “details”, perform the queries shown above. 
+ 
+COMPOUND INDEXES 
+MongoDB supports compound indexes to query multiple fields. A compound index contains multiple single field indexes separated by a comma. db.products.createIndex( { "item": 1, "stock": 1 } ) 
+The command shown above is an example of a compound index on two fields. 
+This diagram depicts a compound index for the fields, userid, and score. The documents are first organized by userid and within each userid, scores are organized in the descending order. The sort order of fields in a compound index is crucial. 
+The documents are first sorted by the item field value and then, within each item field value, they are further sorted by the stock field values. 
+For a compound index, MongoDB limits the fields to a maximum of 31. 
+INDEX PREFIXES 
+Index prefixes are created by taking a different combination of fields and typically, start from the first field. 
+{ "item": 1, “available”:1, "soldQty“:1} 
+For example, consider the compound index given above. 
+It has the item in the ascending order and available in the ascending order as the index prefixes. 
+MongoDB uses a compound index even if the find queries are for index prefixes fields. It uses 
+indexes for querying the item field, the available field, and the soldQty (read as sold quantity) field. 
+MongoDB cannot efficiently support the query on the item and soldQty fields by using index prefixes as it would be like using separate indexes for these fields. The item field is a part of the compound index and the index prefixes. Hence, the item field should be used in the find query of the index. 
+ 
+SORT ORDER 
+In MongoDB, you can use the sort operations to manage the sort order. You can retrieve documents based on the sort order in an index. 
+Following are the characteristics of a sort order: 
+• If sorted documents cannot be obtained from an index, the results will get sorted in the memory. 
+• Sort operations executed using an index show better performance than those executed without using an index. 
+• Sort operations performed without an index gets terminated after exhausting 32 MB of memory. 
+• Indexes store field references in the ascending or descending sort order. 
+• Sort order is not important for single-field indexes because MongoDB can traverse the index in either direction. 
+• Sort order is important for compound indexes because it helps determine if the index can support a sort operation 
+ 
+ENSURE INDEXES FIT RAM 
+To process query faster, ensure that your indexes fit into your system RAM. This will help the system avoid reading the indexes from the hard disk. 
+To confirm the index size, use the query given above. This returns the data in bytes. To ensure this index fits your RAM, you must have more than the required RAM available. In addition, you must have RAM available for the rest of the working set. 
+For multiple collections, check the size of all indexes across all collections. The indexes and the working sets both must fit in the RAM simultaneously. 
+ 
+MULTI-KEY INDEXES 
+When indexing a field containing an array value, MongoDB creates separate index entries for each array component. These multikey indexes in queries match array elements with documents containing arrays and select them.  
+You can construct multikey indexes for arrays holding scalar values, such as strings, numbers, and nested documents. 
+db.coll.createIndex( { : < 1 or -1 > } ) 
+To create a multikey index, you can use the db.collection.createIndex() (read as D-B dot collection dot create Index) method given above. 
+If the indexed field contains an array, MongoDB automatically decides to either create a multikey index or not create one. You need not specify the multikey type explicitly. 
+ 
+COMPOUND MULTI-KEY INDEXES 
+In compound multikey indexes, each indexed document can have maximum one indexed field with an array value. If more than one field has an array value, you cannot create a compound multikey index. 
+{ _id: 1, product_id: [ 1, 2 ], retail_id: [ 100, 200 ], category: "both fields are arrays" } 
+An example of a document structure is shown above. In this collection, both the product_id (read as product underscore ID) and retail_id (read as retail underscore ID) fields are arrays. Therefore, you cannot create a compound multikey index. 
+Note that a shard key index and a hashed index cannot be a multikey index. 
+HASHED INDEXES 
+Following are the characteristics of a hashing function. 
+• The hashing function combines all embedded documents and computes hashes for all field values. 
+• The hashing function does not support multi-key indexes. 
+• Hashed indexes support sharding, uses a hashed shard key to shard a collection, ensures an even distribution of data. 
+• Hashed indexes support equality queries, however, range queries are not supported. 
+You cannot create a unique or compound index by taking a field whose type is hashed. However, 
+you can create a hashed and non-hashed index for the same field. MongoDB uses the scalar index for range queries. 
+db.items.createIndex( { item: "hashed" } ) 
+You can create a hashed index using the operation given above. This will create a hashed index for the items collection on the item field. 
+ 
+TTL INDEXES 
+TTL indexes automatically delete machine-generated data. You can create a TTL index by combining the db.collection.createIndex() method with the expireAfterSeconds option on a field whose value is either a date or an array that contains date values. 
+db.eventlog.createIndex( { "lastModifiedDate": 1 }, { expireAfterSeconds: 3600 } ) 
+For example, to create a TTL index on the lastModifiedDate (read as last modified date) field of the eventlog collection, use the operation shown above in the mongo shell. 
+The TTL background thread runs on both primary and secondary nodes. However, it deletes documents only from the primary node. TTL indexes have the following limitations. 
+• They are not supported by compound indexes which ignore expireAfterSeconds · The _id field does not support TTL indexes. 
+• TTL indexes cannot be created on a capped collection because MongoDB cannot delete documents from a capped collection. 
+• It does not allow the createIndex()(read as create index) method to change the value of expire After Seconds of an existing index. 
+You cannot create a TTL index for a field if a non-TTL index already exists for the same field. If you want to change a non-TTL single-field index to a TTL index, first drop the index and recreate the index with the expireAfterSeconds option. 
+ 
+UNIQUE INDEXES 
+To create a unique index, use the db.collection.createIndex() method and set the unique option to true. 
+db.items.createIndex( { “item": 1 }, { unique: true } ) 
+For example, to create a unique index on the item field of the items collection, execute the operation shown above in the mongo shell. By default, unique is false on MongoDB indexes. If you use the unique constraint on the compound index, then MongoDB will enforce uniqueness on the combination of all those fields which were the part of the compound key. 
+ 
+Unique Index and Missing Field 
+If the indexed field in a unique index has no value, the index stores a null value for the document. Because of this unique constraint, MongoDB permits only one document without the indexed field. 
+In case there is more than one document with a valueless or missing indexed field, the index build process will fail and will display a duplicate key error. To filter these null values and avoid error, combine the unique constraint with the sparse index. 
+ 
+SPARSE INDEXES 
+Sparse indexes manage only those documents which have indexed fields, even if that field contains null values. Sparse index ignores those documents which do not contain any index field. Nonsparse indexes do not ignore these documents and store null values for them. 
+To create a sparse index, use the db.collection.createIndex() method and set the sparse option to true. db.addresses.createIndex( { "xmpp_id": 1 }, { sparse: true } ) 
+In the example given above, the operation in the mongo shell creates a sparse index on the item field of the items collection. If a sparse index returns an incomplete index, then MongoDB does not use that index unless it is specified in the hint method. 
+{ x: { $exists: false } } 
+For example, the second command given above will not use a sparse index on the x field unless it receives explicit hints. 
+An index that combines both sparse and unique does not allow the collection to include documents having duplicate field values for a single field. However, it allows multiple documents that omit the key. 
+ 
+TEXT INDEXES 
+Text indexes in MongoDB help search for text strings in documents of a collection. You can create a text index for field or fields containing string values or an array of strings. 
+To access text indexes, trigger a query using the $text (read as text) query operator. When you create text indexes for multiple fields, specify the individual fields or use the wildcard specifier 
+($**) 
+db.collection.createIndex({subject: "text",content: "text"}) 
+To create text indexes on the subject and content fields, perform the query given above. The text index organizes all strings in the subject and content field, where the field value is either a string or an array of string elements. 
+To allow text search for all fields with strings, use the wildcard specifier ($**). This indexes all fields containing string content. 
+db.collection.createIndex({ "$**": "text" },{ name: "TextIndex" }) 
+The second example given above indexes any string value available in each field of each document in a collection and names the indexes as TextIndex. 
+ 
+Text Search 
+MongoDB supports various languages for text search. The text indexes use simple languagespecific suffix stemming instead of language-specific stop words, such as “the”, “an”, “a”, “and”.  
+You can also choose to specify a language for text search. 
+If you specify the language value as "none", then the text index uses simple tokenization without any stop word and stemming. 
+db.customer_info.createIndex({“item”: “Text”},{ default_language: "spanish"}) 
+ 
+In the query given above, you are enabling the text search option for the item field of the customer_info collection with Spanish as the default language. 
+If the index language is English, text indexes are case-insensitive for all alphabets from A to Z. 
+The text index and the $text operator supports the following: 
+ Two-letter language codes defined in ISO 639-1 (read as I-S-O 6-3-9-1). 
+ Danish, Dutch, English, Finnish, French, German, Hungarian, Italian, Norwegian, 
+Portuguese, Romanian, Russian, Spanish, Swedish, and Turkish 
+Note that a compound text index cannot include special index types, such as multi-key or geospatial Index fields. 
+INDEX CREATION 
+MongoDB provides several options to create indexes. By default, when indexes are created, all other operations on a database are blocked. 
+For example, when indexes on a collection are created, the database becomes unavailable for any read or write operation until the index creation process completes. 
+The read or write operations on the database queue and allow the index building process to complete. Therefore, for index building operations which may consume longer time, you can consider the background operation and thus make MongoDB available even during the entire operation. 
+db.items.createIndex( {item:1},{background: true}) 
+db.items.createIndex({category:1}, {sparse: true, background: true}) 
+The command given above is used for this purpose. By default, the background is false for building MongoDB indexes. 
+Want to test your MongoDB skills? Take the MongoDB free practice test When MongoDB is creating indexes in the background for a collection, you cannot perform other administrative operations involving that collection. 
+For example, you cannot perform tasks, such as runrepairDatabase, (read as run repair database) drop the collection, or use the query db.collection.drop(),(read as D-B dot collection dot drop) and runcompact (read as run compact). 
+If you perform any of these operations, you will receive an error. The index build process in the background uses an incremental approach and is slower than the normal “foreground” index build process. The speed of the index build process depends on the size of the index. If the index size is bigger than the RAM of the system, the process takes more time than the foreground process. 
+Building indexes can impact your database performance: 
+• If the application includes createIndex()(read as create index) operations and 
+• If no index is available for operational concerns. 
+To avoid any performance issues, you can use the getIndexes()(read as get indexes) method to 
+ensure that your application checks for the indexes at the startup. 
+You can also use an equivalent method for your driver and ensure it terminates an operation if the proper indexes do not exist. When building indexes, use separate application codes and designated maintenance windows. 
+ 
+INDEX CREATION ON REPLICA SET 
+Typically, background index operations on a secondary replica set begin after the index building process completes in the primary. 
+If the index build process is running in the background on the primary, the same will happen on the secondary nodes as well. 
+If you want to build large indexes on secondaries, you can build the index by restarting one secondary at a time in a standalone mode. 
+After the index build is complete, restart as a member of the replica set, allow it to catch up with the other members of the set, and then build the index on the next secondary. When all the secondaries have the new index, step down the primary, restart it as a standalone, and build the index on the former primary. 
+To ensure that the secondary catch up with primary, the time taken to build the index on a secondary must be within an oplog. To catch up with primary node, index creation on secondary nodes always happen in the foreground in the “recovering” mode. 
+db.products.createIndex( { item: 1, quantity: -1 } , { name: "inventory" } ) 
+Instead of using the default name, you can specify a name for the index by using the command given above. This will create an index on the item field whose name will be item_index for the customer_info collection. 
+ 
+REMOVE INDEXES 
+You can use the following methods to remove indexes. 
+dropIndex()(read as drop index) method: This removes an index from a collection. db.collection.dropIndex() method: This removes an index. 
+db.accounts.dropIndex( { "tax-id": 1 } ) 
+For example, the first operation given above removes an ascending index on the item field in the items collection. 
+db.collection.dropIndexes() 
+To remove all indexes barring the _id index from a collection, use the second operation provided above. 
+MODIFY INDEXES 
+To modify an index, first, drop the index and then recreate it. Perform the following steps to modify an index. 
+Drop Index: Execute the query given below to return a document showing the operation status. db.orders.dropIndex({ "cust_id" : 1, "ord_date" : -1, "items" : 1 }) 
+Recreate the Index: Execute the query given below to return a document showing the status of the results. 
+db.orders.createIndex({ "cust_id" : 1, "ord_date" : -1, "items" : -1 }) 
+REBUILD INDEXES 
+In addition to modifying indexes, you can also rebuild them. To rebuild all indexes of a collection, use the db.collection.reIndex() method. This will drop all indexes including _id and rebuild all indexes in a single operation. The operation takes the form db.items.reIndex(). 
+To view the indexing process status, type the db.currentOp() (read as D B dot Current operation) command in the mongo shell. The message field will show the percentage of the build completion. 
+To abort an ongoing index build process, use the db.killOp()(read as D B dot kill operation) method in the mongo shell. For index builds, the db.killOp()may occur after most of the index build operation has completed. 
+Note that a replicated index built on the secondary replica set cannot be aborted. 
+ 
+LISTING INDEXES 
+You can list all indexes of a collection and a database. You can get a list of all indexes of a collection by using the db.collection.getIndexes()or a similar method for your drivers. 
+For example, to view all indexes on the items collection, use the db.items.getIndexes() method. 
+db.getCollectionNames().forEach(function(collection) { 
+indexes = db[collection].getIndexes(); 
+print("Indexes for " + collection + ":"); printjson(indexes);\ }); 
+To list all indexes of collections, you can use the operation in the mongo shell as shown above. 
+ 
+THE AGGREGATE() METHOD 
+For the aggregation in MongoDB, you should use aggregate() method. 
+SYNTAX 
+Basic syntax of aggregate() method is as follows − 
+>db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION) 
+EXAMPLE 
+In the collection you have the following data – 
+{ 
+_id: ObjectId(7df78ad8902c) title: 'MongoDB Overview', 
+description: 'MongoDB is no sql database', 
+by_user: 'tutorials point', url: 'http://www.tutorialspoint.com', tags: ['mongodb', 'database', 'NoSQL'], likes: 100 
+}, 
+{ 
+_id: ObjectId(7df78ad8902d) title: 'NoSQL Overview', 
+description: 'No sql database is very fast', by_user: 'tutorials point', url: 'http://www.tutorialspoint.com', tags: ['mongodb', 'database', 'NoSQL'], likes: 10 
+}, { 
+_id: ObjectId(7df78ad8902e) title: 'Neo4j Overview', 
+description: 'Neo4j is no sql database', by_user: 'Neo4j', url: 'http://www.neo4j.com', tags: ['neo4j', 'database', 'NoSQL'], likes: 750 
+}, 
+Now from the above collection, if you want to display a list stating how many tutorials are written by each user, then you will use the following aggregate() method 
+> db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}]) { 
+"result" : [ { 
+"_id" : "tutorials point", 
+"num_tutorial" : 2 
+}, { 
+"_id" : "Neo4j", 
+"num_tutorial" : 1 
+} 
+], 
+"ok" : 1 
+} 
+> 
+ 
+Sql equivalent query for the above use case will be select by_user, count(*) from mycol group by by_user. 
+In the above example, we have grouped documents by field by_user and on each occurrence of by_user previous value of sum is incremented. Following is a list of available aggregation expressions. Expression Description Example 
+$sum 
+Sums up the defined value from all documents in the collection. 
+db.mycol.aggregate([{$group : {_id :"$by_user", num_tutorial : {$sum : "$likes"}}}]) $avg 
+Calculates the average of all given values from all documents in the collection. 
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}]) $min 
+Gets the minimum of the corresponding values from all documents in the collection. 
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}]) $max 
+ 
+Gets the maximum of the corresponding values from all documents in the collection. 
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}]) $push 
+ 
+Inserts the value to an array in the resulting document. 
+db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}]) $addToSet 
+Inserts the value to an array in the resulting document but does not create duplicates. 
+db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet :"$url"}}}]) $first 
+Gets the first document from the source documents according to the grouping. Typically this makes only sense together with some previously applied 
+“$sort”-stage. 
+db.mycol.aggregate([{$group : {_id :"$by_user", first_url : {$first : "$url"}}}]) $last 
+Gets the last document from the source documents according to the grouping. Typically this makes only sense together with some previously applied db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}]) 
+ “$sort”-stage. 
+ 
+PIPELINE CONCEPT 
+In UNIX command, shell pipeline means the possibility to execute an operation on some input and use the output as the input for the next command and so on. MongoDB also supports same concept in aggregation framework. There is a set of possible stages and each of those is taken as a set of documents as an input and produces a resulting set of documents (or the final resulting JSON document at the end of the pipeline). This can then in turn be used for the next stage and so on. 
+Following are the possible stages in aggregation framework − 
+• $project − Used to select some specific fields from a collection. 
+• $match − This is a filtering operation and thus this can reduce the amount of documents that are given as input to the next stage. 
+• $group − This does the actual aggregation as discussed above. 
+• $sort − Sorts the documents. 
+• $skip − With this, it is possible to skip forward in the list of documents for a given amount of documents. 
+• $limit − This limits the amount of documents to look at, by the given number starting from the current positions. 
+• $unwind − This is used to unwind document that are using arrays. When using an array, the data is kind of pre-joined and this operation will be undone with this to have individual documents again. 
+Thus with this stage we will increase the amount of documents for the next stage 
+ 
+Algorithm: 
+1. Start 
+2. Create collection 
+3. Create document 4. Perform aggregation 
+5. Stop. 
+ 
+CONCLUSION: Hence we have studied and Implemented Index and Aggregate Methode. 

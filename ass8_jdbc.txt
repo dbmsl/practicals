@@ -1,0 +1,47 @@
+
+ 
+ASSIGNMENT 8 AIM:  
+Implement MYSQL/Oracle database connectivity with any front end language to implement Database navigation operations (add, delete, edit etc)  
+ 
+LEARNING OBJECTIVES: 
+Understand the implementation of database connectivity. 
+Understanding Create, Read, Update and Delete (CRUD) in java as front end language. 
+ 
+THEORY 
+ 
+Java JDBC is a java API to connect and execute query with the database. JDBC API uses jdbc drivers to connect with the database. 
+ 
+ 
+ 
+ 
+Before JDBC, ODBC API was the database API to connect and execute query with the database. But, ODBC API uses ODBC driver which is written in C language (i.e. platform dependent and unsecured). That is why Java has defined its own API (JDBC API) that uses JDBC drivers (written in Java language).  
+JDBC Driver JDBC Driver is a software component that enables java application to interact with the database.There are 4 types of JDBC drivers:  
+1. JDBC-ODBC bridge driver  
+2. Native-API driver (partially java driver)  
+3. Network Protocol driver (fully java driver)  
+4. Thin driver (fully java driver)  
+ 
+ 
+Advantages:  
+• easy to use.  
+• can be easily connected to any database.  
+ 
+Disadvantages:  
+• Performance degraded because JDBC method call is converted into the ODBC function calls.  
+• The ODBC driver needs to be installed on the client machine.  
+ 
+There are 5 steps to connect any java application with the database in java using JDBC. They are as follows:  
+• Register the driver class  
+• Creating connection  
+Creating statement  
+• Executing queries  
+• Closing connection  
+ 
+Algorithm: 1. start 
+2. Write Student.java program for Display the Student details like Roll no, name and mark.  
+3. Write Client.java program Perform Various Operation on Student database like Add Student, Search Student, Deleted Student and Failed Student List etc.  
+4. Write Db.java program for Open and Close Connection using MySql.  
+5. Write ServerDemo.java program for Connection establishment with Client.  6. stop 
+ 
+Conclusion:  
+In this way Student able to implement the JDBC and Multithreading Concept in java successfully in this assignment.

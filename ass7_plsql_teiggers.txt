@@ -1,0 +1,145 @@
+
+ 
+ 
+ASSIGNMENT 7 AIM: 
+Database Trigger (All Types: Row level and Statement level triggers, Before and After Triggers). Write a database trigger on Library table. The System should keep track of the records that are being updated or deleted. 
+The old value of updated or deleted records should be added in Library_Audit table. 
+ 
+OBJECTIVES: 
+1) To understand Trigger. 
+2) To understand Need of trigger. 
+3) To understand Implementation of all types of trigger. 
+ 
+THEORY: 
+WHAT ARE TRIGGERS IN PL/SQL? 
+Triggers are stored programs that are fired automatically when some events occur. The code to be fired can be defined as per the requirement. 
+BENEFITS OF TRIGGERS 
+Following are the benefits of triggers. 
+• Generating some derived column values automatically 
+• Enforcing referential integrity 
+• Event logging and storing information on table access 
+• Auditing 
+• Synchronous replication of tables 
+• Imposing security authorizations 
+• Preventing invalid transactions 
+TYPES OF TRIGGERS IN ORACLE 
+Triggers can be classified based on the following parameters. 
+• Classification based on the timing 
+i. BEFORE Trigger: It fires before the specified event has occurred. ii. 	AFTER Trigger: It fires after the specified event has occurred. 
+iii. INSTEAD OF Trigger: A special type. You will learn more about the further topics. (only for DML ) 
+• Classification based on the level 
+i. STATEMENT level Trigger: It fires one time for the specified event statement. 
+ii. ROW level Trigger: It fires for each record that got affected in the specified event. (only for 
+DML) 
+• Classification based on the Event 
+i. DML Trigger: It fires when the DML event is specified (INSERT/UPDATE/DELETE) 
+ii. DDL Trigger: It fires when the DDL event is specified (CREATE/ALTER) 
+iii. DATABASE Trigger: It fires when the database event is specified 
+(LOGON/LOGOFF/STARTUP/SHUTDOWN) 
+So each trigger is the combination of above parameters. 
+ 
+HOW TO CREATE TRIGGER 
+Below is the syntax for creating a trigger. 
+ 
+Syntax Explanation: 
+• The above syntax shows the different optional statements that are present in trigger creation. 
+• BEFORE/ AFTER will specify the event timings. 
+• INSERT/UPDATE/LOGON/CREATE/etc. will specify the event for which the trigger needs to be fired. 
+• ON clause will specify on which object the above-mentioned event is valid. For example, this will be the table name on which the DML event may occur in the case of DML Trigger. 
+• Command "FOR EACH ROW" will specify the ROW level trigger. 
+• WHEN clause will specify the additional condition in which the trigger needs to fire. 
+• The declaration part, execution part, exception handling part is same as that of the other PL/SQL blocks. Declaration part and exception handling part are optional. 
+ 
+:NEW AND :OLD CLAUSE 
+In a row level trigger, the trigger fires for each related row. And sometimes it is required to know the value before and after the DML statement. 
+Oracle has provided two clauses in the RECORD-level trigger to hold these values. We can use these clauses to refer to the old and new values inside the trigger body. 
+• :NEW – It holds a new value for the columns of the base table/view during the trigger execution 
+• :OLD – It holds old value of the columns of the base table/view during the trigger execution 
+ 
+This clause should be used based on the DML event. Below table will specify which clause is valid for which DML statement (INSERT/UPDATE/DELETE). 
+ 
+ 
+INSTEAD OF TRIGGER 
+"INSTEAD OF trigger" is the special type of trigger. It is used only in DML triggers. It is used when any DML event is going to occur on the complex view. 
+Consider an example in which a view is made from 3 base tables. When any DML event is issued over this view, that will become invalid because the data is taken from 3 different tables. So in this INSTEAD OF trigger is used. The INSTEAD OF trigger is used to modify the base tables directly instead of modifying the view for the given event. 
+Example 1: In this example, we are going to create a complex view from two base table. 
+• Table_1 is emp table and 
+• Table_2 is department table. 
+Then we are going to see how the INSTEAD OF trigger is used to issue UPDATE the location detail statement on this complex view. We are also going to see how the :NEW and :OLD is useful in triggers. 
+• Step 1: Creating table 'emp' and 'dept' with appropriate columns 
+• Step 2: Populating the table with sample values 
+• Step 3: Creating view for the above created table 
+• Step 4: Update of view before the instead-of trigger 
+• Step 5: Creation of the instead-of trigger 
+• Step 6: Update of view after instead-of trigger 
+ 
+Step 1) Creating table 'emp' and 'dept' with appropriate columns 
+Code Explanation 
+• Code line 1-7: Table 'emp' creation. 
+• Code line 8-12: Table 'dept' creation. 
+Output 
+Table Created 
+ 
+Step 2) Now since we have created the table, we will populate this table with sample values and Creation of Views for the above tables. 
+Code Explanation 
+• Code line 13-19: Inserting data into 'dept' table. 
+• Code line 20-26: Inserting data into 'emp' table. 
+Output 
+PL/SQL procedure completed 
+ 
+Step 3) Creating a view for the above created table. 
+Code Explanation 
+• Code line 27-32: Creation of 'guru99_emp_view' view. 
+• Code line 33: Querying guru99_emp_view. 
+ 
+Step 4) Update of view before instead-of trigger. Code Explanation 
+• Code line 34-38: Update the location of "XXX" to 'FRANCE'. It raised the exception because the DML statements are not allowed in the complex view. 
+ 
+Step 5)To avoid the error encounter during updating view in the previous step, in this step we are going to use "instead of trigger." 
+Code Explanation 
+• Code line 39: Creation of INSTEAD OF trigger for 'UPDATE' event on the 'guru99_emp_view' view at the ROW level. It contains the update statement to update the location in the base table 'dept'. 
+• Code line 44: Update statement uses ':NEW' and ': OLD' to find the value of columns before and after the update. 
+ 
+Step 6) Update of view after instead-of trigger. Now the error will not come as the "instead of trigger" will handle the update operation of this complex view. And when the code has executed the location of employee XXX will be updated to "France" from "Japan." Code Explanation: 
+• Code line 49-53: Update of the location of "XXX" to 'FRANCE'. It is successful because the 'INSTEAD OF' trigger has stopped the actual update statement on view and performed the base table update. 
+• Code line 55: Verifying the updated record. 
+ 
+COMPOUND TRIGGER 
+The Compound trigger is a trigger that allows you to specify actions for each of four timing points in the single trigger body. The four different timing point it supports is as below. 
+• BEFORE STATEMENT – level 
+• BEFORE ROW – level 
+• AFTER ROW - level 
+• AFTER STATEMENT – level 
+It provides the facility to combine the actions for different timing into the same trigger. 
+Syntax Explanation: 
+• The above syntax shows the creation of 'COMPOUND' trigger. 
+• Declarative section is common for all the execution block in the trigger body. 
+• These 4 timing blocks can be in any sequence. It is not mandatory to have all these 4 timing blocks. 
+We can create a COMPOUND trigger only for the timings which are required. 
+Example 1: In this example, we are going to create a trigger to auto-populate the salary column with the default value 5000. 
+Code Explanation: 
+• Code line 2-10: Creation of compound trigger. It is created for timing BEFORE ROW- level to populate the salary with default value 5000. This will change the salary to default value '5000' before inserting the record into the table. 
+• Code line 11-14: Insert the record into 'emp' table. 
+• Code line 16: Verifying the inserted record. 
+ 
+Enabling and Disabling Triggers 
+Triggers can be enabled or disabled. To enable or disable the trigger, an ALTER (DDL) statement needs to be given for the trigger that disable or enable it. 
+Below are the syntax for enabling/disabling the triggers. 
+ALTER TRIGGER <trigger_name> [ENABLE|DISABLE]; 
+ALTER TABLE <table_name> [ENABLE|DISABLE] ALL TRIGGERS; 
+ALGORITHM: 
+1 Start 
+2 Create table books and audit. 
+3 Create trigger on books. 
+4 Insert some values in Books table. 
+5 If record of books is update or delete 
+Trigger get invoke 
+6 Display data of both tables. 
+7 Stop. 
+Trigger: 
+1. Start 
+2. Read old value 
+3. Insert old value in audit table. 
+4. Stop. 
+ 
+CONCLUSION:-We have studied and implemented all types of triggers. 

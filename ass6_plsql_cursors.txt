@@ -1,0 +1,229 @@
+
+ 
+ASSIGNMENT 6 AIM: 
+Write a PL/SQL block of code using parameterized Cursor, that will merge the data available in the newly created table N_RollCall with the data available in the table O_RollCall. If the data in the first table already exist in the second table then that data should be skipped. Implement all types of cursors. 
+ 
+LEARNING OBJECTIVES: 
+1. To understand Cursor. 
+2. To understand all types of Cursor 
+3. To understand need of cursor. 
+ 
+THEORY: 
+PL/SQL CURSORS IN DATABASE 
+What is a database cursor? I guess, is the question which majority of us have faced at least once in our life either during our college studies, or job interview or while doing oracle certification. Database cursor is an important topic from oracle certification as well as from job interview perspective. Thus I am writing this blog by taking both the perspectives in mind so that you will get good marks in your exams as well as ace your Job interview. 
+WHAT IS DATABASE CURSOR? 
+Cursor is a pointer to a memory area called context area. This context area is a memory region inside the Process Global Area or PGA assigned to hold the information about the processing of a SELECT statement or DML Statement such as INSERT, DELETE, UPDATE or MERGE. 
+WHAT IS THE CONTEXT AREA? 
+Let’s dig a little deeper and see what the context area is? The context area is a special memory region inside the Process Global Area or PGA which helps oracle server in processing an SQL statement by holding the important information about that statement. This information includes: 
+• Rows returned by a query. 
+• Number of rows processed by a query. 
+• A pointer to the parsed query in the shared pool. 
+Using cursor you can control the context area as it is a pointer to the same. 
+ 
+ADVANTAGES OF CURSORS 
+There are two main advantages of a cursor: 
+1. Cursor is names thus you can reference it in your program whenever you want. 
+2. Cursor allows you to fetch and process rows returned by a SELECT statement by a row at a time. 
+ 
+TYPES OF CURSORS IN DATABASE: 
+There are two types of cursors in oracle database: 
+1. Implicit cursor 
+2. Explicit cursor 
+ 
+Implicit Cursors in Oracle Database 
+As the name suggests these are the cursors which are automatically created by the oracle server every time an SQL DML statement is executed. User cannot control the behavior of these cursors. Oracle server creates an implicit cursor in the background for any PL/SQL block which executes an SQL statement as long as an explicit cursor does not exist for that SQL statement. 
+Oracle server associates a cursor with every DML statement. Each of the Update & Delete statements has cursors which are responsible to identify those set of rows that are affected by the operation. Also the implicit cursor fulfills the need of a place for an Insert statement to receive the data that is to be inserted into the database. 
+ 
+EXPLICIT CURSOR IN ORACLE DATABASE 
+In contrast to implicit cursors, we have explicit cursors. Explicit cursors are user defined cursors which means user has to create these cursors for any statement which returns more than one row of data. Unlike implicit cursor user has full control of explicit cursor. An explicit cursor can be generated only by naming the cursor in the declaration section of the PL/SQL block. 
+ 
+ADVANTAGES OF EXPLICIT CURSOR: 
+1. Since Explicit cursors are user defined hence they give you more programmatic control on your program. 
+2. Explicit cursors are more efficient as compared to implicit cursors as in latters case it is hard to track data errors. 
+STEPS FOR CREATING AN EXPLICIT CURSOR 
+To create an explicit cursor you need to follow 4 steps. These 4 steps are: 
+• Declare 
+• Open 
+• Fetch 
+• Close 
+In case of implicit cursors oracle server performs all these steps automatically for you. 
+ 
+
+DECLARE: HOW TO DECLARE A DATABASE CURSOR? 
+Declaring a cursor means initializing a cursor into memory. You define explicit cursor in declaration section of your PL/SQL block and associate it with the SELECT statement. 
+Syntax 
+CURSOR cursor_name IS select_statement; 
+ 
+OPEN: HOW TO OPEN A DATABASE CURSOR? 
+Whenever oracle server comes across an ‘Open Cursor’ Statement the following four steps take place automatically. 
+1. All the variables including bind variables in the WHERE clause of a SELECT statement are examined. 2. Based on the values of the variables, the active set is determined, and the PL/SQL engine executes the query for that cursor. Variables are examined at cursor open time. 
+3. The PL/SQL engine identifies the active set of data. 
+4. The active set pointer sets to the first row. 
+Syntax 
+OPEN cursor_name; 
+ 
+FETCH: HOW TO RETRIEVE DATA FROM CURSOR? 
+The process of retrieving the data from the cursor is called fetching. Once the cursor is declared and opened then you can retrieve the data from it. Let’s see how. 
+Syntax 
+FETCH cursor_name INTO PL/SQL variable; Or FETCH cursor_name INTO PL/SQL record; 
+ 
+What happens when you execute fetch command of a cursor? 
+• The use of a FETCH command is to retrieve one row at a time from the active set. This is usually done inside a loop. The values of each row in the active set can then be stored in the corresponding variables or PL/SQL record one at a time, performing operations on each one successively. 
+• After completion of each FETCH, the active set pointer is moved forward to the next row. 
+Therefore, each FETCH returns successive rows of the active set, until the entire set is returned. The last FETCH does not assign values to the output variables as they still contain their previous values. 
+ 
+CLOSE: HOW TO CLOSE A DATABASE CURSOR? 
+Once you are done working with your cursor it’s advisable to close it. As soon as the server comes across the closing statement of a cursor it will relinquish all the resources associated with it. 
+Syntax 
+CLOSE cursor_name; 
+ 
+ 
+BASIC PROGRAMMING STRUCTURE OF THE CURSOR 
+Here is the basic programming structure of the cursor in oracle database. 
+DECLARE  
+CURSOR cursor_name IS select_statement;  
+BEGIN  
+OPEN cursor_name;  
+FETCH cursor_name INTO PL/SQL variable [PL/SQL record];  CLOSE cursor_name;  
+END; 
+ / 
+ 
+CURSOR ATTRIBUTES 
+Oracle provides six attributes which work in correlation with cursors. These attributes are: 
+1. %FOUND 
+2. %NOTFOUND 
+3. %ISOPEN 
+4. %ROWCOUNT 
+5. %BULK_ROWCOUNT 
+6. %BULK_EXCEPTIONS 
+First three attributes ‘Found’, ‘NotFound’ and ‘IsOpen’ are Boolean attributes whereas the last one 
+‘RowCount’ is a numeric attribute. Let’s quickly take a look at all these attributes. 
+%Found 
+Cursor attribute ‘Found’ is a Boolean attribute which returns TRUE if the previous FETCH command returned a row otherwise it returns FALSE. 
+%NotFound 
+ ‘Not Found’ cursor attribute is also a Boolean attribute which returns TRUE only when previous FETCH command of the cursor did not return a row otherwise this attribute will return FALSE. 
+%IsOpen 
+Again ‘Is Open’ Cursor attribute is a Boolean attribute which you can use to check whether your cursor is open or not. It returns TRUE if the cursor is open otherwise it returns FALSE. 
+%RowCount 
+Row count cursor attribute is a numeric attribute which means it returns a numeric value as a result and that value will be the number of records fetched from a cursor at that point in time. 
+%BULK_ROWCOUNT 
+'Bulk RowCount' cursor attribute Returns the number of records modified by the FORALL statement for each collection element 
+%BULK_EXCEPTIONS 
+Similar to 'Bulk RowCount' the 'Bulk EXCEPTIONS' cursor attribute Returns exception information for rows modified by the FORALL statement for each collection element 
+ 
+CREATE EXPLICIT CURSOR IN ORACLE DATABASE 
+As we have already learnt that whenever we execute a DML statement, the oracle server creates an implicit cursor in the background. As these cursors are created by oracle server itself thus user does not have much programmatic control on them. In case if you want to control your own DMLs then you need to write an explicit cursor. 
+So let’s quickly see how you can create your own database cursor in oracle database. 
+SET SERVEROUTPUT ON;  
+DECLARE  v_name VARCHAR2(30);  
+--Declare Cursor  
+CURSOR cur_RebellionRider IS  
+SELECT first_name FROM EMPLOYEES  
+WHERE employee_id < 105;  BEGIN  
+OPEN cur_RebellionRider;  
+LOOP  
+FETCH cur_RebellionRider INTO v_name; 
+	  	 	DBMS_OUTPUT.PUT_LINE (v_name);  
+EXIT WHEN cur_RebellionRider%NOTFOUND;  
+END LOOP;--Simple Loop End  
+CLOSE cur_RebellionRider;  
+END; 
+ / 
+We used EMPLOYEE table of HR sample Schema for creating the above explicit cursor. You can watch my Video Tutorial on The Same Topic for line by line explanation of the above code. 
+Declaration of your cursor can only be done in the “Declaration” section of the PL/SQL block and the rest of the steps of explicit cursor creation cycle must be done in the execution section of a PL/SQL block. 
+ 
+PARAMETERIZED CURSOR IN DATABASE 
+WHAT IS PARAMETERIZED CURSOR? 
+Unlike simple explicit cursor, parameterized cursors accept values as parameter. You specify the list of parameters separated by comma (,) while declaring the cursor and supply the corresponding argument for each parameter in the list while opening the cursor. 
+Definition: 
+Cursor parameter can be appropriately defined as an explicit cursor that accepts arguments from the user in the form of parameter. 
+SYNTAX OF PARAMETERIZED CURSOR IN DATABASE 
+CURSOR cur _ name (parameter list) IS SELECT statement; 
+Syntax of declaring a cursor parameter is pretty similar to that of the simple cursor except the addition of parameters enclosed in the parenthesis. OPEN cur _ name (argument list) 
+You have to provide corresponding arguments for each parameter that are specified during the declaration. 
+Rest of the steps are the same as that of the simple cursor. 
+There are few things which you have to take care of while specifying the parameters in your explicit cursor. 
+• In case of multiple parameters, always separate parameters and the corresponding arguments in the list from each other using comma (,). 
+• You can specify as many parameters as you need just make sure to include an argument in parameter list for each parameter when you open the cursor. 
+• While specifying a parameter during the declaration of the explicit cursor only specify the data type not the data width. 
+ 
+SOME WONDERFUL ADVANTAGES OF PARAMETERIZED CURSORS 
+MAKES THE CURSOR MORE REUSABLE 
+You can use a parameter and then pass different values to the WHERE clause each time a cursor is opened instead of hardcoding a value into the WHERE clause of a query to select particular information. 
+AVOIDS SCOPING PROBLEMS 
+When you pass parameters instead of hardcoding the values, the result set for that cursor is not tied to a specific variable in a program or block. Therefore in case your program has nested blocks, you can define the cursor at a higher-level (enclosing) block and use it in any of the sub-blocks with variables defined in those local blocks. 
+WHEN DO WE NEED A PARAMETERIZED CURSOR? 
+The simplest answer is whenever you need to use your cursor in more than one place with different values for the same WHERE clause of your SELECT statement.  
+ 
+Example of Parameterized cursor. 
+SET SERVEROUTPUT ON; 
+ DECLARE  v_name VARCHAR2 (30);  
+--Declare Cursor  
+CURSOR p_cur_RebellionRider (var_e_id VARCHAR2) IS SELECT first_name FROM EMPLOYEES WHERE employee_id < var_e_id;  
+BEGIN  
+OPEN p_cur_RebellionRider (105); 
+ LOOP  
+FETCH p_cur_RebellionRider INTO v_name;  
+EXIT WHEN p_cur_RebellionRider%NOTFOUND; 
+	  	DBMS_OUTPUT.PUT_LINE(v_name );  
+END LOOP;  
+CLOSE p_cur_RebellionRider;  
+END; 
+ / 
+CURSOR FOR LOOP IN DATABASE 
+As the name suggests Cursor For Loop is a type of For loop provided by oracle PL/SQL which makes working with cursors in oracle database a lot easier by executing OPEN, FETCH & CLOSE Cursor statements implicitly in the background for you. 
+Definition: 
+Cursor for Loop Is an Extension of the Numeric For Loop provided by Oracle PL/SQL which works on specified cursors and performs OPEN, FETCH & CLOSE cursor statements implicitly in the background. 
+SYNTAX OF CURSOR FOR LOOP. 
+FOR loop_index IN cursor_name  
+LOOP  
+Statements…  
+END LOOP; 
+ 
+EXAMPLE 1: CURSOR FOR LOOP WITH SIMPLE EXPLICIT CURSOR 
+SET SERVEROUTPUT ON; 
+ DECLARE  
+CURSOR cur_RebellionRider IS  
+SELECT first_name, last_name FROM employees 
+ WHERE employee_id >200;  
+BEGIN  
+FOR L_IDX IN cur_RebellionRider 
+LOOP  
+DBMS_OUTPUT.PUT_LINE(L_IDX.first_name||' '||L_IDX.last_name);  END LOOP; 
+END;  
+/ 
+EXAMPLE 2: CURSOR FOR LOOP WITH INLINE CURSOR. 
+You can pass the cursor definition directly into the Cursor For Loop. The code for that is: 
+SET  
+SERVEROUTPUT ON;  
+BEGIN  
+FOR L_IDX IN (SELECT first_name, last_name FROM employees  
+WHERE employee_id >200)  
+LOOP  
+DBMS_OUTPUT.PUT_LINE (L_IDX.first_name||' '||L_IDX.last_name);  END LOOP;  
+END; 
+ / 
+As you can see in the above code, instead of declaring a cursor into a separate declaration section of PL/SQL block we can write the Cursor’s SELECT DML statement right inside the loop statement after IN keyword. Just remember: 
+• Directly write the SELECT statement without specifying the cursor name into the loop statement. 
+• Enclose the SELECT statement into parenthesis. 
+• Do not terminate the SELECT statement with a semicolon (;) 
+ 
+HOW MANY TIMES WILL CURSOR FOR LOOP EXECUTE? 
+Unlike Numeric For Loop with Cursor For Loop we don’t have minimum or maximum range which will decide the number of execution. So how many times will this loop execute? This loop will execute for each row returned by the specified cursor and it will terminate either when there is no row to return or there is an occurrence of an exception. 
+ 
+ALGORITHM: 
+Write a PL/SQL block of code using parameterized Cursor, that will merge the data available in the newly created table N_RollCall with the data available in the table O_RollCall. If the data in the first table already exist in the second table then that data should be skipped. Implement all types of cursors. 1. Start 
+2. Login to DBMS 
+3. Use/Create Database 4. Create N_RollCall table. 
+5. Create O_RollCall table. 
+6. Insert some records in both tables. 
+7. Create cursor on N_RollCall table. 
+8. Read data from N_RollCall table. 
+9. Check record %IFNOTFOUND in O_RollCall then insert. 
+10. Repeat till last record. 
+11. Display records of both tables. 
+12. Exit RDBMS. 
+13. Stop. 
+ 
+CONCLUSION: Hence we have studied and implemented all types of cursors. 
+ 
